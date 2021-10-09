@@ -21,9 +21,9 @@ bsgscudaHT2.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk 
 pause<br />
 
 # Compilation
-To compile the program you need Purebasic v5.31, download from https://www.purebasic.com/pause <br />
+To compile the program you need Purebasic v5.31, download from https://www.purebasic.com <br />
 Also need external program https://github.com/arnaud-lb/binsort <br />
-This program is using to quick sorb baby array. <br />
+This program is using to quick sort baby array. <br />
 Put binsort.exe to the lib folder. <br />
 
 
