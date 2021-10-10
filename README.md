@@ -2,7 +2,7 @@
 Usage:<br />
 -h   Help<br />
 -t   Number of GPU threads, ex. -t 256<br />
--b   Number of GPU blocks, ex. -b 68<br />
+-b   Number of GPU blocks, ex. -b 68, set equil to the SM number of your card<br />
 -p   Number of pparam(value 256 is optimal), ex. -p 256<br />
 -d   Select GPU IDs, ex. -d 1,2,3<br />
 -pb  Set single uncompressed pubkey for searching<br />
