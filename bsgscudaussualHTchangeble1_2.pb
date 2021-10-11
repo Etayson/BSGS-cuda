@@ -138,7 +138,7 @@ keyMutex = CreateMutex()
 ;-VARIABLES
 
 threadtotal = 512;512
-blocktotal = 46;68
+blocktotal = 68;68
 pparam=256
 waletcounter=Int(Pow(2, 26))
 
