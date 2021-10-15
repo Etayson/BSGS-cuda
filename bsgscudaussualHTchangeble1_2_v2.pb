@@ -14,7 +14,7 @@ CompilerEndIf
 #alignMemoryGpu=64   
 #LOGFILE=1
 #WINFILE="win.txt"
-#appver="1.3"
+#appver="1.3.1"
 Structure JobSturucture
   *arr
   *NewPointsArr
@@ -133,7 +133,7 @@ Define  blocktotal.i
 Define pparam.w
 Define.s Gx , Gy, p, privkey, privkeyend, pball$, walletall$, mainpub, addpubs
 Define waletcounter, usedgpucount, isruning
-Define maxnonce, *BabyArr, *BabyArrSorted, *GiantArr, *GiantArrPacked, *HelperArr, totallaunched
+Define maxnonce, *BabyArr, *BabyArr_unalign, *BabyArrSorted, *BabyArrSorted_unalign, *GiantArr, *GiantArrPacked, *HelperArr, totallaunched
 Define NewMap job.JobSturucture()
 Define NewMap sortjob.sortjobStructure()
 Define keyMutex, quit
@@ -208,16 +208,20 @@ EndIf
 Define *GpuHT=*GpuHT_unalign+#align_size-(*GpuHT_unalign % #align_size)
 
 maxnonce = threadtotal * blocktotal * pparam
-*BabyArr=AllocateMemory((waletcounter+1)*8)
-If *BabyArr=0
+*BabyArr_unalign=AllocateMemory((waletcounter+1)*8 + #align_size)
+If *BabyArr_unalign=0
   PrintN("Can`t allocate memory")
   exit("")
 EndIf
-*BabyArrSorted=AllocateMemory((waletcounter+1)*8)
-If *BabyArrSorted=0
+*BabyArr=*BabyArr_unalign+#align_size-(*BabyArr_unalign % #align_size)
+
+*BabyArrSorted_unalign=AllocateMemory((waletcounter+1)*8 + #align_size)
+If *BabyArrSorted_unalign=0
   PrintN("Can`t allocate memory")
   exit("")
 EndIf
+*BabyArrSorted=*BabyArrSorted_unalign+#align_size-(*BabyArrSorted_unalign % #align_size)
+
 *GiantArr=AllocateMemory((maxnonce+1)*64)
 If *GiantArr=0
   PrintN("Can`t allocate memory")
@@ -1080,8 +1084,8 @@ Procedure GenBabys(*xpoint, *ypoint)
     PrintN("Save BIN file:"+filebinname$)
     savedbytes=0
     maxsavebytes=full_size
-    If full_size>1024*1024*1024
-      maxsavebytes = 1024*1024*1024
+    If full_size>2*1024*1024*1024
+      maxsavebytes = 2*1024*1024*1024
     EndIf
     *pp=*BabyArr
     
@@ -2660,8 +2664,8 @@ Repeat
             
             
             
-            PrintN("***********GPU#"+Str(gpuid)+"************")
-            PrintN("Total solutions: "+Str(winset))            
+            ;PrintN("***********GPU#"+Str(gpuid)+"************")
+            ;PrintN("Total solutions: "+Str(winset))            
             ;PrintN("Winnonce: "+Str(wintid))            
             ;PrintN("ArrayID: "+Str(winpubid))   ;pos in sorted array   
             ;PrintN("At: "+Curve::m_gethex32(*MylocalPrk))
@@ -2703,6 +2707,7 @@ Repeat
                     Curve::m_subModX64(*tempor,*Curveqn,*tempor,*Curveqn)
                     Curve::m_PTMULX64(TestPUB\x, TestPUB\y, *CurveGX, *CurveGY, *tempor,*CurveP)
                   EndIf
+                  PrintN("***********GPU#"+Str(gpuid)+"************")
                   PrintN("KEY!!>"+Curve::m_gethex32(*tempor)) 
                   PrintN("Pub: "+Curve::m_gethex32(TestPUB\x)+ Curve::m_gethex32(TestPUB\y))
                   PrintN("****************************")   
@@ -2737,6 +2742,7 @@ Repeat
                       Curve::m_subModX64(*tempor,*Curveqn,*tempor,*Curveqn)
                       Curve::m_PTMULX64(TestPUB\x, TestPUB\y, *CurveGX, *CurveGY, *tempor,*CurveP)
                     EndIf
+                    PrintN("***********GPU#"+Str(gpuid)+"************")
                     PrintN("KEY!!>"+Curve::m_gethex32(*tempor))
                     PrintN("Pub: "+Curve::m_gethex32(TestPUB\x)+ Curve::m_gethex32(TestPUB\y))
                     PrintN("****************************")   
@@ -2934,7 +2940,7 @@ If winset
 EndIf
 
 cuMemFree_v2(DeviceReturnNumberUnAlign)
-cuCtxDestroy(CudaContext)
+cuCtxDestroy_v2(CudaContext)
 FreeMemory(*batch)
 FreeMemory(*r)
 FreeMemory(*counterBig)
@@ -3394,9 +3400,19 @@ Procedure checkWholeHashTableContentPack(*arr)
    ProcedureReturn err
  EndProcedure
  
+Procedure RemoveGiantArr()   
+  Protected memtotal
+  Shared  *GiantArr
+  
+  memtotal + MemorySize(*GiantArr) 
+  
+  FreeMemory(*GiantArr) 
+  PrintN("Freed memory: "+StrD(memtotal/1024/1024,3)+" MB")
+EndProcedure
+
  Procedure RemoveTempHashTable()   
   Protected *ptr, i, hash, res.HashTableResultStructure, offset, counter, memtotal
-  Shared *Table, *Table_unalign, *GpuHT, *PointerTable, HT_items, HT_total_items , HT_mask , *GiantArr
+  Shared *Table, *Table_unalign, *GpuHT, *PointerTable, HT_items, HT_total_items , HT_mask 
   
   
   
@@ -3412,9 +3428,9 @@ Procedure checkWholeHashTableContentPack(*arr)
       counter+res\size
     EndIf
   Next i
-  memtotal + MemorySize(*Table_unalign) + MemorySize(*GiantArr) 
+  memtotal + MemorySize(*Table_unalign)
   FreeMemory(*Table_unalign) 
-  FreeMemory(*GiantArr) 
+  
   PrintN("Total removed items: "+Str(counter)+", freed memory: "+StrD(memtotal/1024/1024,3)+" MB")
 EndProcedure
 
@@ -3471,7 +3487,7 @@ Procedure Save_Load_HTpacked(*xpoint)
 
   
     
-  filebinname$=Curve::m_gethex32(*xpoint)+"_"+Str(waletcounter)+"_ht.BIN"
+  filebinname$=Curve::m_gethex32(*xpoint)+"_"+Str(waletcounter)+"_"+Str(HT_items)+"_ht.BIN"
   full_size= HT_items*#HashTablesz + waletcounter*#HashTableSizeItems
   
   If FileSize(filebinname$) = -1
@@ -3811,7 +3827,7 @@ PrintN("Done in "+FormatDate("%hh:%ii:%ss", (ElapsedMilliseconds()-starttime)/10
   ;PrintN(Curve::m_gethex32(*GiantArr+i*32) +" , "+Curve::m_gethex32(*GiantArr+i*32 + maxnonce * 32) )
 ;Next i
 
-
+RemoveGiantArr()   
 
 
 ;Generate Babys points
@@ -5717,9 +5733,9 @@ EndDataSection
 
 ; IDE Options = PureBasic 5.31 (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 150
-; FirstLine = 131
-; Folding = DAAoCAAkMAE1
+; CursorPosition = 16
+; FirstLine = 12
+; Folding = DAAoKAglMAkp
 ; EnableThread
 ; EnableXP
 ; Executable = bsgscudaHT2.exe
