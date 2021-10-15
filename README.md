@@ -8,7 +8,7 @@ Usage:<br />
 -pb  Set single uncompressed pubkey for searching<br />
 -pk  Range start from, ex. -pk 0x1<br />
 -pke End range, ex. -pke 0x100<br />
--w     Set number of baby items , must be a multiple of a power of 2, ex. -w 22  mean 2^22 points <br />
+-w     Set number of baby items (maximum value 31) , ex. -w 22  mean 2^22 points <br />
 -htsz  Set number of HashTable 2^, ex. -htsz 25, default 25 <br />
 -infile  Set file with pubkey for searching in uncompressed format (search sequential) <br />
 
