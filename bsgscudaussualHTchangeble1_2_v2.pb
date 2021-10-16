@@ -14,7 +14,7 @@ CompilerEndIf
 #alignMemoryGpu=64   
 #LOGFILE=1
 #WINFILE="win.txt"
-#appver="1.3.1"
+#appver="1.3.2"
 Structure JobSturucture
   *arr
   *NewPointsArr
@@ -1084,8 +1084,8 @@ Procedure GenBabys(*xpoint, *ypoint)
     PrintN("Save BIN file:"+filebinname$)
     savedbytes=0
     maxsavebytes=full_size
-    If full_size>2*1024*1024*1024
-      maxsavebytes = 2*1024*1024*1024
+    If full_size>1024*1024*1024
+      maxsavebytes = 1024*1024*1024
     EndIf
     *pp=*BabyArr
     
@@ -5734,7 +5734,6 @@ EndDataSection
 ; IDE Options = PureBasic 5.31 (Windows - x64)
 ; ExecutableFormat = Console
 ; CursorPosition = 16
-; FirstLine = 12
 ; Folding = DAAoKAglMAkp
 ; EnableThread
 ; EnableXP
