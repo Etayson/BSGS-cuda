@@ -5,14 +5,25 @@ Usage:<br />
 -b   Number of GPU blocks, ex. -b 68, set equil to the SM number of your card<br />
 -p   Number of pparam(value 256 is optimal), ex. -p 256<br />
 -d   Select GPU IDs, ex. -d 1,2,3<br />
--pb  Set single uncompressed pubkey for searching<br />
+-pb  Set single uncompressed/compressed pubkey for searching<br />
 -pk  Range start from, ex. -pk 0x1<br />
 -pke End range, ex. -pke 0x100<br />
--w     Set number of baby items , must be a multiple of a power of 2, ex. -w 22  mean 2^22 points <br />
+-w     Set number of baby items 2^, ex. -w 22  mean 2^22 points <br />
 -htsz  Set number of HashTable 2^, ex. -htsz 25, default 25 <br />
--infile  Set file with pubkey for searching in uncompressed format (search sequential) <br />
+-infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential) <br />
 
-All arrays(Baby, Baby sorted, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
+Note! set minimal -htsz value depending on -w <br />
+-w 29  -htsz 28 <br />
+-w 28  -htsz 27 <br />
+-w 27  -htsz 25 <br />
+if you set low -htsz value then you can get error during sorting HT, increase -htsz to solve issue.<br />
+
+-w 29 good for GPU with memory 11Gb<br />
+-w 28 good for GPU with memory 8Gb<br />
+-w 28 or -w27 good for GPU with memory 6Gb<br />
+
+All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
+After you have the arrays saved, you will need less RAM to launch.
 <br />
 Example bat file for single pubkey searching:<br />
 SET  pub=59A3BFDAD718C9D3FAC7C187F1139F0815AC5D923910D516E186AFDA28B221DC994327554CED887AAE5D211A2407CDD025CFC3779ECB9C9D7F2F1A1DDF3E9FF8<br />
@@ -40,9 +51,7 @@ Solved pubkeys will be saved to the win.txt file
 
 # Compilation
 To compile the program you need Purebasic v5.31, download from https://www.purebasic.com <br />
-Also need external program https://github.com/arnaud-lb/binsort <br />
-This program is using to quick sort baby array. <br />
-Put binsort.exe to the lib folder. <br />
+
 
 
 
