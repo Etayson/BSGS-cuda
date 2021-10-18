@@ -14,7 +14,7 @@ CompilerEndIf
 #alignMemoryGpu=64   
 #LOGFILE=1
 #WINFILE="win.txt"
-#appver="1.4.0"
+#appver="1.4.1"
 Structure JobSturucture
   *arr
   *NewPointsArr
@@ -1978,64 +1978,7 @@ Procedure SortingArrays(totalthread, *xpoint)
 
 EndProcedure
 
-Procedure RunBinSort(*xpoint)
-  Shared mainpub, waletcounter
-  Protected SortParams$,progsort$, filebinname$, fileboutname$, Compiler, S_Size,S_blocksize,S_tempdir$, err=0
-  progsort$="binsort.exe"
-  S_Size=8
-  S_blocksize=40485760
-  S_tempdir$="temp"
-  
-  If FileSize(progsort$)<=0
-    FilePutContents(progsort$, ?binsorta, ?binsortb-?binsorta)
-  EndIf
-  filebinname$=Curve::m_gethex32(*xpoint)+"_"+Str(waletcounter)+"_b.BIN"
-  fileboutname$=Curve::m_gethex32(*xpoint)+"_"+Str(waletcounter)+"_s.BIN"
-  If FileSize(fileboutname$)<=0
-    SortParams$ = "-logtostderr=true -v=8 --size "+Str(S_Size)+" --block-size "+Str(S_blocksize)+" --temporary-directory "+S_tempdir$+" "+filebinname$+" "+fileboutname$
-    PrintN("Ex params:"+SortParams$)
-    If FileSize(S_tempdir$)=-2
-      PrintN("Temp dir exist")
-    Else
-      PrintN("Temp dir created")
-      CreateDirectory(S_tempdir$)
-    EndIf
-    If FileSize(filebinname$)>0
-      PrintN("Input file ["+filebinname$+"] exist")
-      If FileSize(progsort$)>0
-        PrintN("External programm ["+progsort$+"] exist")
-        Compiler = RunProgram(progsort$, SortParams$, "", #PB_Program_Open)
-        If Compiler
-          PrintN("Sorting in External programm...wait")
-          WaitProgram(Compiler)
-  
-          
-          CloseProgram(Compiler) ; Close the connection to the program
-          If FileSize(fileboutname$)<=0
-            err=3
-          Else
-            If FileSize(S_tempdir$)=-2
-              DeleteDirectory(S_tempdir$,"")
-  
-              PrintN("Temp dir deleted")
-              
-            EndIf
-          EndIf
-        EndIf
-      Else
-        PrintN("Programm "+progsort$+" not exist")
-        err=2
-      EndIf
-    Else
-      PrintN("File "+filebinname$+" not exist")
-      err=1
-    EndIf
-  EndIf
-  
-  
-  
-  ProcedureReturn err
-EndProcedure
+
 
 Procedure Writeint(*Aptr, idx.i, blockDim.w, threadDim.w,  *targPtr)
   Protected *initAptr, threadIdx, blockIdx.i = 0, threadtotal.i, base.i, threadId.i, index.i, threadtotal64.i, temp.i
@@ -2341,7 +2284,7 @@ Shared *PrivBIG
 LockMutex(keyMutex)
 isruning+1
 UnlockMutex(keyMutex)
-Delay(50)
+Delay(5)
 
 *temper=AllocateMemory(32)
 If *temper=0
@@ -3980,6 +3923,7 @@ For i=0 To (?BSGS4_cuda_quad_htchangeble_v2end-?BSGS4_cuda_quad_htchangeble_v2)-
 Next i
 
 
+
 isreadyjob=0
 Defdevice$ = RemoveString(Defdevice$, " ")
 If Defdevice$<>""
@@ -3987,6 +3931,15 @@ If Defdevice$<>""
 Else
   pointcount = usedgpucount
 EndIf
+
+
+a$=RSet(Hex(maxnonce*waletcounter*pointcount*2), 64,"0")
+Curve::m_sethex32(*PRKADDBIG, @a$ )
+
+Curve::m_PTMULX64(PUBADDBIG\x, PUBADDBIG\y, *CurveGX, *CurveGY, *PRKADDBIG,*CurveP)
+;make it negative> p-ypoint
+Curve::m_subModX64(PUBADDBIG\y,*CurveP,PUBADDBIG\y,*CurveP)
+
 PrintN("GPU count #"+Str(pointcount))
 
     If Defdevice$=""
@@ -4002,6 +3955,7 @@ PrintN("GPU count #"+Str(pointcount))
     Else
       
       pointcount = CountString(Defdevice$,",")
+      
       If pointcount
         i=0
         While i<=pointcount
@@ -4065,12 +4019,6 @@ EndIf
 
 ;-TESTTING
 
-a$=RSet(Hex(maxnonce*waletcounter*pointcount*2), 64,"0")
-Curve::m_sethex32(*PRKADDBIG, @a$ )
-
-Curve::m_PTMULX64(PUBADDBIG\x, PUBADDBIG\y, *CurveGX, *CurveGY, *PRKADDBIG,*CurveP)
-;make it negative> p-ypoint
-Curve::m_subModX64(PUBADDBIG\y,*CurveP,PUBADDBIG\y,*CurveP)
 
 ;*******************************************
 ;----BSGS алгоритм
@@ -5868,20 +5816,13 @@ BSGS4_cuda_quad_htchangeble_v2end:
 EndDataSection
 
 
-
-
-DataSection
-  binsorta:
-  IncludeBinary "lib\binsort.exe"
-  binsortb:
-EndDataSection
-
 ; IDE Options = PureBasic 5.31 (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 152
-; FirstLine = 137
-; Folding = TBAQVAAb--0X-
+; CursorPosition = 16
+; FirstLine = 9
+; Folding = TBAQVAAt--+r
 ; EnableThread
 ; EnableXP
 ; Executable = bsgscudaHT2_3.exe
 ; DisableDebugger
+; CommandLine = -d 0
