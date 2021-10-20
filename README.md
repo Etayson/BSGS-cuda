@@ -13,14 +13,15 @@ Usage:<br />
 -infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential) <br />
 
 Note! set minimal -htsz value depending on -w <br />
+-w 30  -htsz 28 <br />
 -w 29  -htsz 28 <br />
 -w 28  -htsz 27 <br />
 -w 27  -htsz 25 <br />
 if you set low -htsz value then you can get error during sorting HT, increase -htsz to solve issue.<br />
 
--w 29 good for GPU with memory 11Gb<br />
+-w 29 or -w 30 good for GPU with memory 11Gb<br />
 -w 28 good for GPU with memory 8Gb<br />
--w 28 or -w27 good for GPU with memory 6Gb<br />
+-w 28 or -w 27 good for GPU with memory 6Gb<br />
 
 All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
 After you have the arrays saved, you will need less RAM to launch.
@@ -33,7 +34,7 @@ SET block_size=68<br />
 SET pparam_size=256<br />
 SET items_size=26<br />
 
-bsgscudaHT2.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br /> 
+bsgscudaHT2_1_6.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br /> 
 pause<br />
 
 Example bat file for sequential searching pubkeys from file:<br />
@@ -44,7 +45,7 @@ SET block_size=68 <br />
 SET pparam_size=256 <br />
 SET items_size=26 <br />
 
-bsgscudaHT2.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -infile PUBS.txt <br />
+bsgscudaHT2_1_6.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -infile PUBS.txt <br />
 pause <br />
 
 Solved pubkeys will be saved to the win.txt file
