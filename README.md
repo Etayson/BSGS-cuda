@@ -20,8 +20,8 @@ Note! set minimal -htsz value depending on -w <br />
 -w 27  -htsz 25 <br />
 if you set low -htsz value then you can get error during sorting HT, increase -htsz to solve issue.<br />
 
--w 29 good for GPU with memory 11Gb<br />
--w 28 good for GPU with memory 8Gb<br />
+-w 30 good for GPU with memory 11Gb<br />
+-w 29 good for GPU with memory 8Gb<br />
 -w 28 or -w27 good for GPU with memory 6Gb<br />
 
 All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
