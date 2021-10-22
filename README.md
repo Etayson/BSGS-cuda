@@ -10,7 +10,7 @@ Usage:<br />
 -pke End range, ex. -pke 0x100<br />
 -w     Set number of baby items 2^, ex. -w 22  mean 2^22 points <br />
 -htsz  Set number of HashTable 2^, ex. -htsz 25, default 25 <br />
--infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential) <br />
+-infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential), one pubkey per line. <br />
 
 Note! set minimal -htsz value depending on -w <br />
 -w 29  -htsz 28 <br />
