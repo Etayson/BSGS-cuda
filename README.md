@@ -13,6 +13,8 @@ Usage:<br />
 -infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential), one pubkey per line. <br />
 
 Note! set minimal -htsz value depending on -w <br />
+-w 31  -htsz 29 need around 64GB of RAM to generate all arrays<br />
+-w 30  -htsz 28 need around 32GB of RAM to generate all arrays<br />
 -w 29  -htsz 28 <br />
 -w 28  -htsz 27 <br />
 -w 27  -htsz 25 <br />
