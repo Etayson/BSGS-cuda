@@ -10,11 +10,11 @@ Usage:<br />
 -pke End range, ex. -pke 0x100<br />
 -w     Set number of baby items 2^, ex. -w 22  mean 2^22 points <br />
 -htsz  Set number of HashTable 2^, ex. -htsz 25, default 25 <br />
--infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential), one pubkey per line. <br />
--wl      Set recovery file from which the state will be loaded.<br />
--wt      Set timer for autosaving current state, default 180s.<br />
-Current state is always saved to file currentwork.txt
-If app crash or you stop app, you can start working from the last saved state. Provided the launch configuration has not been changed.
+-infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential), one pubkey per line<br />
+-wl      Set recovery file from which the state will be loaded<br />
+-wt      Set timer for autosaving current state, default 180s<br />
+Current state is always saved to file currentwork.txt<br />
+If app crash or you stop app, you can start working from the last saved state. Provided the launch configuration has not been changed.<br />
 
 Note! set minimal -htsz value depending on -w <br />
 -w 31  -htsz 29 need around 64GB of RAM to generate all arrays<br />
