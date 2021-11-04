@@ -11,6 +11,10 @@ Usage:<br />
 -w     Set number of baby items 2^, ex. -w 22  mean 2^22 points <br />
 -htsz  Set number of HashTable 2^, ex. -htsz 25, default 25 <br />
 -infile  Set file with pubkey for searching in uncompressed/compressed format (search sequential), one pubkey per line. <br />
+-wl      Set recovery file from which the state will be loaded.<br />
+-wt      Set timer for autosaving current state, default 180s.<br />
+Current state is always saved to file currentwork.txt
+If app crash or you stop app, you can start working from the last saved state. Provided the launch configuration has not been changed.
 
 Note! set minimal -htsz value depending on -w <br />
 -w 31  -htsz 29 need around 64GB of RAM to generate all arrays<br />
@@ -35,7 +39,7 @@ SET block_size=68<br />
 SET pparam_size=256<br />
 SET items_size=26<br />
 
-bsgscudaHT2.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br /> 
+bsgscudaHT_1_7_2.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br /> 
 pause<br />
 
 Example bat file for sequential searching pubkeys from file:<br />
@@ -46,7 +50,7 @@ SET block_size=68 <br />
 SET pparam_size=256 <br />
 SET items_size=26 <br />
 
-bsgscudaHT2.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -infile PUBS.txt <br />
+bsgscudaHT_1_7_2.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -infile PUBS.txt <br />
 pause <br />
 
 Solved pubkeys will be saved to the win.txt file
