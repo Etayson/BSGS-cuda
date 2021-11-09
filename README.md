@@ -17,7 +17,7 @@ Current state is always saved to file currentwork.txt<br />
 If app crash or you stop app, you can start working from the last saved state. Provided the launch configuration has not been changed.<br />
 
 Note! set minimal -htsz value depending on -w <br />
--w 31  -htsz 29 need around 64GB of RAM to generate all arrays<br />
+
 -w 30  -htsz 28 need around 32GB of RAM to generate all arrays<br />
 -w 29  -htsz 28 <br />
 -w 28  -htsz 27 <br />
