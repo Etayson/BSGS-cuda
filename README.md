@@ -28,7 +28,7 @@ if you set low -htsz value then you can get error during sorting HT, increase -h
 -w 29 good for GPU with memory 8Gb<br />
 -w 28 or -w27 good for GPU with memory 6Gb<br />
 
-All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
+All arrays packed htCPU, htGPU, G2 saved to the disk for fast spinup solver next time (if parameters -w, -htsz, -t, -b, -p  will not changed).
 After you have the arrays saved, you will need less RAM to launch.<br />
 Change -w, -htsz impact _htCPUv2.BIN and _htGPUv2.BIN files<br />
 Change -t, -b, -p impact _g2.BIN file<br />
