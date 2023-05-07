@@ -38,8 +38,8 @@ SET thread_size=512<br />
 SET block_size=68<br />
 SET pparam_size=256<br />
 SET items_size=26<br />
-
-bsgscudaHT_1_7_2.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br /> 
+SET htsz_size=25<br />
+bsgscudaHT_1_9_5.exe -t %thread_size% -b %block_size% -p %pparam_size% -pb %pub% -pk %rangestart% -w %items_size%<br -htsz %htsz_size%/> 
 pause<br />
 
 Example bat file for sequential searching pubkeys from file:<br />
@@ -49,8 +49,9 @@ SET thread_size=512 <br />
 SET block_size=68 <br />
 SET pparam_size=256 <br />
 SET items_size=26 <br />
+SET htsz_size=25<br />
 
-bsgscudaHT_1_7_2.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -infile PUBS.txt <br />
+bsgscudaHT_1_9_5.exe -t %thread_size% -b %block_size% -p %pparam_size%  -pk %rangestart% -pke %rangeend% -w %items_size% -htsz %htsz_size%/ -infile PUBS.txt <br />
 pause <br />
 
 Solved pubkeys will be saved to the win.txt file
