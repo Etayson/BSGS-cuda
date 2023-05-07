@@ -30,6 +30,9 @@ if you set low -htsz value then you can get error during sorting HT, increase -h
 
 All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
 After you have the arrays saved, you will need less RAM to launch.
+Change -w, -htsz impact _htCPUv2.BIN adn _htGPUv2.BIN files
+Change -t, -b, -p impact _g2.BIN file
+ 
 <br />
 Example bat file for single pubkey searching:<br />
 SET  pub=59A3BFDAD718C9D3FAC7C187F1139F0815AC5D923910D516E186AFDA28B221DC994327554CED887AAE5D211A2407CDD025CFC3779ECB9C9D7F2F1A1DDF3E9FF8<br />
