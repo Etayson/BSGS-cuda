@@ -29,9 +29,9 @@ if you set low -htsz value then you can get error during sorting HT, increase -h
 -w 28 or -w27 good for GPU with memory 6Gb<br />
 
 All arrays(Baby, Giant) and hashtable saved to the disk for fast spinup solver next time (if parameters will not changed).
-After you have the arrays saved, you will need less RAM to launch.
-Change -w, -htsz impact _htCPUv2.BIN adn _htGPUv2.BIN files
-Change -t, -b, -p impact _g2.BIN file
+After you have the arrays saved, you will need less RAM to launch.<br />
+Change -w, -htsz impact _htCPUv2.BIN and _htGPUv2.BIN files<br />
+Change -t, -b, -p impact _g2.BIN file<br />
  
 <br />
 Example bat file for single pubkey searching:<br />
